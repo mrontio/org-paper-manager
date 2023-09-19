@@ -1,3 +1,5 @@
+(require 'org)
+
 (defvar paper-download-path
   "~/Downloads/"
   "Path to downloads folder for browser")

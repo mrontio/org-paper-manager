@@ -49,7 +49,8 @@
          (file-name (car last-downloaded-file-and-attr))
          (file-mod-time (file-attribute-modification-time (cdr last-downloaded-file-and-attr)))
          (paper-index-marker (org-find-exact-headline-in-buffer paper-org-headline (current-buffer)))
-         (org-paper-index-headline-level))
+         (org-paper-index-headline-level)
+         (current-paper-headline-mark))
      (when (resolve-file-timeline-p file-name file-mod-time)
        (rename-file (concat paper-download-path file-name) (concat paper-storage-path file-name))
        (save-excursion
@@ -63,7 +64,8 @@
          (org-demote-subtree)
          (insert (format "TODO %s"
                          (replace-regexp-in-string "_+" " "
-                          (string-trim-right file-name "\.pdf"))))
+                                                   (string-trim-right file-name "\.pdf"))))
+         (setq current-paper-headline-mark (point))
          (newline)
          (insert "- ")
          (org-insert-link nil (concat "file:" paper-storage-path file-name) "Link")
@@ -75,4 +77,6 @@
          (insert "#+END_SRC")
          (org-insert-heading)
          (insert "Notes")
+         (goto-char current-paper-headline-mark)
+         (org-fold-subtree t)
          (widen)))))

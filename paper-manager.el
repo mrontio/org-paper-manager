@@ -20,7 +20,7 @@
 (defun resolve-file-timeline-p (file-path file-mod-time)
   (let ((minutes-since-download (/ (time-convert (time-since file-mod-time) 'integer) 60)))
     (if (> minutes-since-download paper-warning-period-minutes)
-        (yes-or-no-p (format "Download \"%s\" is %d minutes old, continue? " file-path minutes-since-download))
+        (y-or-n-p (format "Download \"%s\" is %d minutes old, continue? " file-path minutes-since-download))
       't)))
 
 (defun ask-to-store-link-p (entry-name)

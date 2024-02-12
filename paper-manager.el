@@ -59,8 +59,8 @@
     (when (resolve-file-timeline-p file-name file-mod-time)
       (unless (file-directory-p paper-storage-path)
         (make-directory paper-storage-path))
-      (rename-file (concat paper-download-path file-name) (concat paper-storage-path file-name))
       (setq store-link (y-or-n-p (format "Store link for %s?" entry-name)))
+      (rename-file (concat paper-download-path file-name) (concat paper-storage-path file-name))
       (save-excursion
         (org-goto-marker-or-bmk paper-index-marker)
         (org-narrow-to-subtree)

@@ -70,7 +70,7 @@
         (insert-char ?* org-paper-index-headline-level)
         (insert-char ? )
         (org-demote-subtree)
-        (insert (format "TODO %s" entry-name))
+        (insert entry-name)
         (setq current-paper-headline-mark (point))
         (newline)
         (insert "- ")

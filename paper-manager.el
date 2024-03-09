@@ -50,7 +50,7 @@
   (let* ((last-downloaded-file-and-attr
           (car (sort (directory-files-and-attributes paper-download-path nil ".*\.pdf" 't) 'mod-time-lesser-p)))
          (file-name (car last-downloaded-file-and-attr))
-         (entry-name (replace-regexp-in-string "_+" " " (string-trim-right file-name "\.pdf")))
+         (entry-name (replace-regexp-in-string "_\n+" " " (string-trim-right file-name "\.pdf")))
          (file-mod-time (file-attribute-modification-time (cdr last-downloaded-file-and-attr)))
          (paper-index-marker (org-find-exact-headline-in-buffer paper-org-headline (current-buffer)))
          (org-paper-index-headline-level)

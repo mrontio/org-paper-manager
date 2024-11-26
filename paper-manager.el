@@ -37,13 +37,15 @@
   (let ((current-headline)
         (pos 0))
     (save-excursion
-      (goto-char mark)
-      (setq current-headline (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-      (while (string-match "*" current-headline pos)
-        (setq pos (+ 1 pos)))
-      (if (and (> pos 0) (char-equal (aref current-headline pos) ? ))
-          pos
-        'nil))))
+      (save-restriction
+        (widen)
+        (goto-char mark)
+        (setq current-headline (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+        (while (string-match "*" current-headline pos)
+          (setq pos (+ 1 pos)))
+        (if (and (> pos 0) (char-equal (aref current-headline pos) ? ))
+            pos
+          'nil)))))
 
 (defun pull-paper ()
   (interactive)
@@ -84,7 +86,7 @@
         (org-insert-heading)
         (insert "Notes")
         (goto-char current-paper-headline-mark)
-        (org-fold-subtree t)
+        ;(org-fold-subtree t)
         (when store-link
           (org-store-link nil t))
         (widen)))))

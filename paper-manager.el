@@ -47,6 +47,30 @@
             pos
           'nil)))))
 
+(defvar paper-manager-subheading-templates
+  '(("Citation" . "#+begin_src latex\n#+end_src latex" )
+    ("Analysis Framework" . "- What has the paper claimed to achieve?\n- What has the paper achieved?\n- Questions (1-3):")
+    ("Notes" . "")))
+
+(defun paper-manager-insert-subheadings (headline-mark)
+  (goto-char headline-mark)
+  (let ((heading-level (org-current-level))
+        (first? t)
+        subheading content)
+    (dolist (entry paper-manager-subheading-templates)
+      (setq subheading (car entry))
+      (setq content (cdr entry))
+      (goto-char (- (point-max) 1)) ; Assume buffer is narrowed
+      (if first?
+          (progn
+            (org-insert-subheading nil)
+            (setq first? nil))
+        (org-insert-heading))
+      (insert subheading)
+      (newline)
+      (insert content))))
+
+
 (defun pull-paper ()
   (interactive)
   (let* ((last-downloaded-file-and-attr
@@ -77,16 +101,8 @@
         (newline)
         (insert "- ")
         (org-insert-link nil (concat "file:" paper-storage-path file-name) "Link")
-        (org-insert-subheading nil)
-        (insert "Citation")
-        (newline)
-        (insert "#+BEGIN_SRC latex")
-        (newline)
-        (insert "#+END_SRC")
-        (org-insert-heading)
-        (insert "Notes")
+        (paper-manager-insert-subheadings current-paper-headline-mark)
         (goto-char current-paper-headline-mark)
-        ;(org-fold-subtree t)
         (when store-link
           (org-store-link nil t))
         (widen)))))
